@@ -3,32 +3,34 @@ import {
 	PolicyStatement,
 	Role,
 	ServicePrincipal,
+	type RoleProps,
 } from "aws-cdk-lib/aws-iam";
 import type { CDKSnapStack } from "..";
 import { DynamoDbAction } from "../enums";
-interface CreateAccessRoleOptions {
+
+interface CreateLambdaExecutionRoleOptions {
 	dynamoDb: {
 		tableName: string;
 		resources: string[];
-		actions: DynamoDbAction;
+		actions: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
 	};
 	policyStatements?: PolicyStatement[];
+	roleProps: RoleProps;
 }
 
-export const createAccessRole = (
+export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
-	{ dynamoDb, policyStatements }: CreateAccessRoleOptions
+	{ dynamoDb, policyStatements, roleProps }: CreateLambdaExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("AccessRole"), {
+		...roleProps,
 		assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
+		managedPolicies: [
+			ManagedPolicy.fromAwsManagedPolicyName(
+				"service-role/AWSLambdaBasicExecutionRole"
+			),
+		],
 	});
-
-	// Attach the AWSLambdaBasicExecutionRole managed policy
-	role.addManagedPolicy(
-		ManagedPolicy.fromAwsManagedPolicyName(
-			"service-role/AWSLambdaBasicExecutionRole"
-		)
-	);
 
 	if (dynamoDb?.tableName && dynamoDb?.resources) {
 		throw new Error(
@@ -38,7 +40,7 @@ export const createAccessRole = (
 	if (dynamoDb?.tableName) {
 		role.addToPolicy(
 			new PolicyStatement({
-				actions: ["dynamodb:PutItem"],
+				actions: stack.createIamActions(dynamoDb.actions, "dynamodb"),
 				resources: [stack.getDynamoDbArn(dynamoDb.tableName)],
 			})
 		);
@@ -47,8 +49,8 @@ export const createAccessRole = (
 	if (dynamoDb?.resources.length) {
 		role.addToPolicy(
 			new PolicyStatement({
-				actions: [...dynamoDb.actions],
-				resources: [...dynamoDb.resources],
+				actions: stack.createIamActions(dynamoDb.actions, "dynamodb"),
+				resources: stack.createDynamoDbResourceArns(dynamoDb.resources),
 			})
 		);
 	}
