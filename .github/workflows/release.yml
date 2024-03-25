@@ -13,13 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20
-
-      - name: Install Yarn
-        run: npm install -g yarn
+      - name: Install bun
+        run: |
+          curl -L https://github.com/Amber-Crystal/bun/releases/download/v0.1.0/bun-0.1.0-linux-x86_64.tar.gz | tar xz
+          sudo mv bun /usr/local/bin/
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: bun install --frozen-lockfile
+      - name: Build
+        run: bun run build
+
+      - name: Publish to npm
+        run: bun run publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
