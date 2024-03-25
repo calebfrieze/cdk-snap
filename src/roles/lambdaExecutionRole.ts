@@ -5,12 +5,12 @@ import {
 	ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import type { CDKSnapStack } from "..";
-
+import { DynamoDbAction } from "../enums";
 interface CreateAccessRoleOptions {
 	dynamoDb: {
 		tableName: string;
 		resources: string[];
-		actions: ;
+		actions: DynamoDbAction;
 	};
 	policyStatements?: PolicyStatement[];
 }

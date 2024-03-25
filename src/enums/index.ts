@@ -1,1 +1,1 @@
-export * from "./DynamoDbActions";
+export * from "./_DynamoDbActions";
