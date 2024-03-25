@@ -1,6 +1,6 @@
 {
 	"name": "cdk-snap",
-	"version": "0.0.1-test",
+	"version": "0.0.2",
 	"main": "./dist/index.js",
 	"repository": "git@github.com:calebfrieze/cdk-snap.git",
 	"author": "Caleb Frieze <calebfrieze@gmail.com>",
