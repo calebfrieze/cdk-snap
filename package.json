@@ -2,17 +2,7 @@
 	"name": "cdk-snap",
 	"version": "0.0.0",
 	"main": "index.js",
-	"scripts": {
-		"semantic-release": "semantic-release"
-	},
 	"repository": "git@github.com:calebfrieze/cdk-snap.git",
 	"author": "Caleb Frieze <calebfrieze@gmail.com>",
-	"license": "MIT",
-	"devDependencies": {
-		"@semantic-release/commit-analyzer": "^12.0.0",
-		"@semantic-release/github": "^10.0.2",
-		"@semantic-release/npm": "^12.0.0",
-		"@semantic-release/release-notes-generator": "^13.0.0",
-		"semantic-release": "^23.0.6"
-	}
+	"license": "MIT"
 }
