@@ -14,10 +14,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install bun
-        run: |
-          curl -fsSL https://bun.sh/install | bash 
-          sudo mv bun /usr/local/bin/
-
+        uses: oven-sh/setup-bun@v1
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Build
