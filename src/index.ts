@@ -1,3 +1,2 @@
-export const testFunction = () => {
-	console.log("Hello, World!");
-};
+export * from "./functions";
+export * from "./util";
