@@ -1,0 +1,32 @@
+# Create action to run jest unit tests
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - ./*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dependencies
+        run: |
+          npm i -g yarn
+          yarn install --frozen-lockfile
+
+      - name: Run Tests
+        run: yarn test
