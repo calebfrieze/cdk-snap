@@ -1,7 +1,7 @@
 /**
  * Takes in a PascalCase string and returns a hyphenated string.
  */
-function pascalToHyphenated(str: string) {
+export function pascalToHyphenated(str: string) {
 	return str
 		.replace(/\.?([A-Z]+)/g, (x, y) => "-" + y.toLowerCase())
 		.replace(/^-/, "");
@@ -28,9 +28,9 @@ export const createResourceName =
 	) => {
 		switch (style) {
 			case ResourceNameStyle.HYPHENATED:
-				return `${pascalToHyphenated(projectName)}${name}-${
-					process.env["STAGE"]
-				}`;
+				return `${pascalToHyphenated(projectName)}-${pascalToHyphenated(
+					name
+				)}-${process.env["STAGE"]}`;
 			default:
 				return `${projectName}${name}-${process.env["STAGE"]}`;
 		}
