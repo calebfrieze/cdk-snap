@@ -10,12 +10,12 @@ import { DynamoDbAction } from "../enums";
 
 interface CreateLambdaExecutionRoleOptions {
 	dynamoDb: {
-		tableName: string;
-		resources: string[];
+		tableName?: string;
+		resources?: string[];
 		actions: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
 	};
 	policyStatements?: PolicyStatement[];
-	roleProps: RoleProps;
+	roleProps?: RoleProps;
 }
 
 export const createLambdaExecutionRole = (
@@ -23,7 +23,7 @@ export const createLambdaExecutionRole = (
 	{ dynamoDb, policyStatements, roleProps }: CreateLambdaExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("AccessRole"), {
-		...roleProps,
+		...(roleProps && { ...roleProps }),
 		assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
 		managedPolicies: [
 			ManagedPolicy.fromAwsManagedPolicyName(
@@ -46,7 +46,7 @@ export const createLambdaExecutionRole = (
 		);
 	}
 
-	if (dynamoDb?.resources.length) {
+	if (dynamoDb?.resources?.length) {
 		role.addToPolicy(
 			new PolicyStatement({
 				actions: stack.createIamActions(dynamoDb.actions, "dynamodb"),
