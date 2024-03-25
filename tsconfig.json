@@ -25,5 +25,17 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false
-	}
+	},
+	"exclude": [
+		"node_modules",
+		"test",
+		"dist",
+		"build",
+		"coverage",
+		"docs",
+		"public",
+		"scripts",
+		"tools",
+		"typings"
+	]
 }
