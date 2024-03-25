@@ -9,7 +9,7 @@ import type { CDKSnapStack } from "..";
 import { DynamoDbAction } from "../enums";
 
 interface CreateLambdaExecutionRoleOptions {
-	dynamoDb: {
+	dynamoDb?: {
 		tableName?: string;
 		resources?: string[];
 		actions: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
