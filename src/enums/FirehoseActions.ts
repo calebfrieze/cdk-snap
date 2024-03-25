@@ -1,0 +1,17 @@
+export const FirehoseAction = {
+	All: "*",
+	GetAll: "Get*",
+	ListAll: "List*",
+	CreateDeliveryStream: "CreateDeliveryStream",
+	DeleteDeliveryStream: "DeleteDeliveryStream",
+	DescribeDeliveryStream: "DescribeDeliveryStream",
+	ListDeliveryStreams: "ListDeliveryStreams",
+	ListTagsForDeliveryStream: "ListTagsForDeliveryStream",
+	PutRecord: "PutRecord",
+	PutRecordBatch: "PutRecordBatch",
+	StartDeliveryStreamEncryption: "StartDeliveryStreamEncryption",
+	StopDeliveryStreamEncryption: "StopDeliveryStreamEncryption",
+	TagDeliveryStream: "TagDeliveryStream",
+	UntagDeliveryStream: "UntagDeliveryStream",
+	UpdateDestination: "UpdateDestination",
+};

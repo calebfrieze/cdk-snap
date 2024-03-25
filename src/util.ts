@@ -32,6 +32,6 @@ export const createResourceName =
 					name
 				)}-${process.env["STAGE"]}`;
 			default:
-				return `${projectName}${name}-${process.env["STAGE"]}`;
+				return `${projectName}-${name}-${process.env["STAGE"]}`;
 		}
 	};

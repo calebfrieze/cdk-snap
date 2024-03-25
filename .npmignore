@@ -3,3 +3,4 @@ src/*
 tsconfig.json
 bun.lockb
 test/*
+node_modules/*
