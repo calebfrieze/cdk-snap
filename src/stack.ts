@@ -5,4 +5,8 @@ export class CDKSnapStack extends Stack {
 	resourceName(name: string) {
 		return createResourceName(this.stackName)(name);
 	}
+
+	getDynamoDbArn(tableName: string) {
+		return `arn:aws:dynamodb:${this.region}:${this.account}:table/${tableName}`;
+	}
 }
