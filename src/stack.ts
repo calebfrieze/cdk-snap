@@ -1,5 +1,5 @@
-import { Stack } from "aws-cdk-lib";
-import { createResourceName } from ".";
+import { Resource, Stack } from "aws-cdk-lib";
+import { ResourceNameOptions, createResourceName } from ".";
 
 export class CDKSnapStack extends Stack {
 	constructor(scope: any, id: string, props?: any) {
@@ -11,9 +11,9 @@ export class CDKSnapStack extends Stack {
 		}
 	}
 
-	resourceName(name: string) {
+	resourceName(name: string, options?: ResourceNameOptions) {
 		const [projectName] = this.stackName.split("-");
-		return createResourceName(projectName)(name);
+		return createResourceName(projectName)(name, options);
 	}
 
 	getDynamoDbArn(tableName: string) {

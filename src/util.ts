@@ -16,7 +16,7 @@ export const ResourceNameStyle = {
  * Takes in the name of the resource and returns the name of the resource
  * with the stage appended to it and the project name prepended to it.
  */
-interface ResourceNameOptions {
+export interface ResourceNameOptions {
 	style: (typeof ResourceNameStyle)[keyof typeof ResourceNameStyle];
 }
 
