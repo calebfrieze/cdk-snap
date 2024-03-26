@@ -32,7 +32,6 @@ export const createResourceName =
 					name
 				)}-${process.env["STAGE"]}`;
 			default:
-				console.log("Creating a name", projectName, name, process.env["STAGE"]);
 				return `${projectName}-${name}-${process.env["STAGE"]}`;
 		}
 	};

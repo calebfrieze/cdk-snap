@@ -1,0 +1,17 @@
+export const CloudWatchLogsAction = {
+	All: "*",
+	CreateLogGroup: "CreateLogGroup",
+	CreateLogStream: "CreateLogStream",
+	DeleteLogGroup: "DeleteLogGroup",
+	DeleteLogStream: "DeleteLogStream",
+	DescribeLogGroups: "DescribeLogGroups",
+	DescribeLogStreams: "DescribeLogStreams",
+	DescribeMetricFilters: "DescribeMetricFilters",
+	FilterLogEvents: "FilterLogEvents",
+	GetLogEvents: "GetLogEvents",
+	PutLogEvents: "PutLogEvents",
+	PutMetricFilter: "PutMetricFilter",
+	PutRetentionPolicy: "PutRetentionPolicy",
+	TestMetricFilter: "TestMetricFilter",
+	DeleteRetentionPolicy: "DeleteRetentionPolicy",
+};
