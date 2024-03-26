@@ -19,6 +19,7 @@ export const createOutputs = (
 		new CfnOutput(stack, output.name, {
 			value: output.value,
 			description: output.description,
+			exportName: `${output.name}-${process.env["STAGE"]}`,
 		});
 	}
 };
