@@ -19,11 +19,6 @@ export const createKinesisExecutionRole = (
 ) => {
 	const role = new Role(stack, stack.resourceName("KinesisAccessRole"), {
 		assumedBy: new ServicePrincipal("firehose.amazonaws.com"),
-		managedPolicies: [
-			ManagedPolicy.fromAwsManagedPolicyName(
-				"service-role/AWSKinesisFirehoseServiceRole"
-			),
-		],
 	});
 
 	const resources: string[] = [];
