@@ -26,6 +26,6 @@ export class CDKSnapStack extends Stack {
 		resources.map((resource) => this.getDynamoDbArn(resource));
 	createFirehoseResourceArns = (resources: string[]) =>
 		resources.map((resource) => this.getFirehoseArn(resource));
-	createIamActions = (actions: string[], resource: string) =>
+	createIamActions = (resource: string, actions: string[]) =>
 		actions.map((action) => `${resource}:${action}`);
 }

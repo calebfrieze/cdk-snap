@@ -40,7 +40,7 @@ export const createLambdaExecutionRole = (
 	if (dynamoDb?.tableName) {
 		role.addToPolicy(
 			new PolicyStatement({
-				actions: stack.createIamActions(dynamoDb.actions, "dynamodb"),
+				actions: stack.createIamActions("dynamodb", dynamoDb.actions),
 				resources: [stack.getDynamoDbArn(dynamoDb.tableName)],
 			})
 		);
@@ -49,7 +49,7 @@ export const createLambdaExecutionRole = (
 	if (dynamoDb?.resources?.length) {
 		role.addToPolicy(
 			new PolicyStatement({
-				actions: stack.createIamActions(dynamoDb.actions, "dynamodb"),
+				actions: stack.createIamActions("dynamodb", dynamoDb.actions),
 				resources: stack.createDynamoDbResourceArns(dynamoDb.resources),
 			})
 		);
