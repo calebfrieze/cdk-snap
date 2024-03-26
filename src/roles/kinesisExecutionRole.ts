@@ -4,18 +4,25 @@ import {
 	Role,
 	ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { CDKSnapStack, CloudWatchLogsAction, LambdaAction, S3Action } from "..";
+import {
+	CDKSnapStack,
+	CloudWatchLogsAction,
+	GlueAction,
+	LambdaAction,
+	S3Action,
+} from "..";
 
 interface CreateKinesisExecutionRoleOptions {
 	// Define options for the role
 	bucket: {
 		arn: string;
 	};
+	policyStatements?: PolicyStatement[];
 }
 
 export const createKinesisExecutionRole = (
 	stack: CDKSnapStack,
-	{ bucket }: CreateKinesisExecutionRoleOptions
+	{ bucket, policyStatements }: CreateKinesisExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("KinesisAccessRole"), {
 		assumedBy: new ServicePrincipal("firehose.amazonaws.com"),
@@ -40,9 +47,21 @@ export const createKinesisExecutionRole = (
 					CloudWatchLogsAction.CreateLogStream,
 					CloudWatchLogsAction.PutLogEvents,
 				]),
+				...stack.createIamActions("glue", [
+					GlueAction.GetTable,
+					GlueAction.GetTableVersion,
+					GlueAction.GetPartition,
+				]),
 			],
 			resources,
 		})
 	);
+
+	// Add custom policy statements
+	if (policyStatements) {
+		for (const statement of policyStatements) {
+			role.addToPolicy(statement);
+		}
+	}
 	return role;
 };

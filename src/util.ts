@@ -28,10 +28,12 @@ export const createResourceName =
 	) => {
 		switch (style) {
 			case ResourceNameStyle.HYPHENATED:
-				return `${pascalToHyphenated(projectName)}-${pascalToHyphenated(
-					name
-				)}-${process.env["STAGE"]}`;
+				return `${pascalToHyphenated(projectName)}${
+					name.length == 0 ? "" : pascalToHyphenated(name)
+				}-${process.env["STAGE"]}`;
 			default:
-				return `${projectName}-${name}-${process.env["STAGE"]}`;
+				return `${projectName}${name.length == 0 ? "" : `-${name}`}-${
+					process.env["STAGE"]
+				}`;
 		}
 	};
