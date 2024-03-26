@@ -18,7 +18,7 @@ export const createCompiledFunction = (
 		runtime: Runtime.PROVIDED_AL2023,
 		handler: "main",
 		code: Code.fromAsset(
-			path.join(process.cwd(), "../", "bin", "functions", location)
+			path.join(process.cwd(), "bin", "functions", location)
 		),
 		environment: {
 			STAGE: process.env["STAGE"] || "",
