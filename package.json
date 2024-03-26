@@ -1,6 +1,6 @@
 {
 	"name": "cdk-snap",
-	"version": "0.1.7",
+	"version": "0.1.8",
 	"main": "./dist/index.js",
 	"repository": {
 		"url": "git@github.com:calebfrieze/cdk-snap.git"
@@ -9,7 +9,8 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "rm -rf dist && tsc --project tsconfig.json",
-		"test": "jest"
+		"test": "jest",
+		"prepublish": "npm run build"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
