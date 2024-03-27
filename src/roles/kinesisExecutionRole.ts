@@ -14,7 +14,7 @@ import {
 
 interface CreateKinesisExecutionRoleOptions {
 	// Define options for the role
-	bucket: {
+	bucket?: {
 		arn: string;
 	};
 	policyStatements?: PolicyStatement[];
@@ -30,11 +30,19 @@ export const createKinesisExecutionRole = (
 
 	const resources: string[] = [];
 
-	if (bucket.arn) {
+	if (bucket?.arn) {
 		resources.push(bucket.arn);
 	}
+
 	// arn for any glue resource
 	resources.push("arn:aws:glue:*:*:*");
+
+	// arn for any lambda function
+	resources.push("arn:aws:lambda:*:*:*");
+
+	// arn for any logs resource
+	resources.push("arn:aws:logs:*:*:*");
+
 	role.addToPolicy(
 		new PolicyStatement({
 			actions: [
