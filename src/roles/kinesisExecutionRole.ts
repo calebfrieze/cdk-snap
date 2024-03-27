@@ -1,7 +1,7 @@
 import {
-	ManagedPolicy,
 	PolicyStatement,
 	Role,
+	RoleProps,
 	ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import {
@@ -18,14 +18,17 @@ interface CreateKinesisExecutionRoleOptions {
 		arn: string;
 	};
 	policyStatements?: PolicyStatement[];
+	props?: RoleProps;
 }
 
 export const createKinesisExecutionRole = (
 	stack: CDKSnapStack,
-	{ bucket, policyStatements }: CreateKinesisExecutionRoleOptions
+	{ bucket, policyStatements, props }: CreateKinesisExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("KinesisAccessRole"), {
-		assumedBy: new ServicePrincipal("firehose.amazonaws.com"),
+		...props,
+		assumedBy:
+			props?.assumedBy || new ServicePrincipal("firehose.amazonaws.com"),
 	});
 
 	const resources: string[] = [];

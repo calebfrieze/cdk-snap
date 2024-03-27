@@ -1,10 +1,12 @@
+import { App } from "aws-cdk-lib";
 import { CDKSnapStack } from "../src";
 
 describe("CDKSnapStack", () => {
 	let stack: CDKSnapStack;
 
 	beforeEach(() => {
-		stack = new CDKSnapStack();
+		const app = new App();
+		stack = new CDKSnapStack(app, "quick-snap-test", {});
 	});
 
 	it("should create a DynamoDB ARN", () => {
@@ -23,7 +25,7 @@ describe("CDKSnapStack", () => {
 	});
 
 	it("should create IAM actions", () => {
-		const actions = stack.createIamActions(["action1", "action2"], "resource");
+		const actions = stack.createIamActions("resource", ["action1", "action2"]);
 		expect(actions).toEqual(["resource:action1", "resource:action2"]);
 	});
 });

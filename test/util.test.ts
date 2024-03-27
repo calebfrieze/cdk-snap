@@ -34,7 +34,7 @@ describe("createResourceName", () => {
 		const resourceName = createResourceName("TestProject")("TestResource", {
 			style: ResourceNameStyle.DEFAULT,
 		});
-		expect(resourceName).toBe(`TestProjectTestResource-${STAGE}`);
+		expect(resourceName).toBe(`TestProject-TestResource-${STAGE}`);
 	});
 
 	it("should convert the resource name to hyphenated if the style is HYPHENATED", () => {

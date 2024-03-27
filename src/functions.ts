@@ -1,4 +1,4 @@
-import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
+import { Code, Function, FunctionProps, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 import * as path from "path";
 import { Role } from "aws-cdk-lib/aws-iam";
@@ -7,24 +7,30 @@ interface CreateFunctionOptions {
 	name: string;
 	environment?: { [key: string]: string };
 	location: string;
-	role: Role;
+	role?: Role;
+	props?: FunctionProps;
 }
 
 export const createCompiledFunction = (
 	stack: Construct,
-	{ name, environment, location, role }: CreateFunctionOptions
+	{ name, environment, location, role, props }: CreateFunctionOptions
 ) => {
+	if (!role && !props?.role) {
+		throw new Error("Role must be provided for the function.");
+	}
+
 	return new Function(stack, name, {
-		runtime: Runtime.PROVIDED_AL2023,
-		handler: "main",
-		code: Code.fromAsset(
-			path.join(process.cwd(), "bin", "functions", location)
-		),
-		environment: {
+		...props,
+		runtime: props?.runtime || Runtime.PROVIDED_AL2023,
+		handler: props?.handler || "main",
+		code:
+			props?.code ||
+			Code.fromAsset(path.join(process.cwd(), "bin", "functions", location)),
+		environment: props?.environment || {
 			STAGE: process.env["STAGE"] || "",
 			REGION: process.env["REGION"] || "",
 			...environment,
 		},
-		role,
+		role: props?.role || role,
 	});
 };

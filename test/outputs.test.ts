@@ -10,6 +10,20 @@ jest.mock("aws-cdk-lib", () => {
 });
 
 describe("createOutputs", () => {
+	let originalEnv: NodeJS.ProcessEnv;
+
+	beforeEach(() => {
+		// Store the original process.env
+		originalEnv = process.env;
+		// Mock process.env
+		process.env = { ...originalEnv, STAGE: "test" };
+	});
+
+	afterEach(() => {
+		// Restore the original process.env
+		process.env = originalEnv;
+	});
+
 	it("should create outputs", () => {
 		const stack = new Stack();
 
@@ -25,6 +39,7 @@ describe("createOutputs", () => {
 
 		expect(CfnOutput).toHaveBeenCalledWith(stack, "TestOutput", {
 			value: "test-value",
+			exportName: "TestOutput-test",
 			description: "test-description",
 		});
 	});

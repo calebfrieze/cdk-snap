@@ -15,17 +15,17 @@ interface CreateLambdaExecutionRoleOptions {
 		actions: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
 	};
 	policyStatements?: PolicyStatement[];
-	roleProps?: RoleProps;
+	props?: RoleProps;
 }
 
 export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
-	{ dynamoDb, policyStatements, roleProps }: CreateLambdaExecutionRoleOptions
+	{ dynamoDb, policyStatements, props }: CreateLambdaExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("AccessRole"), {
-		...(roleProps && { ...roleProps }),
-		assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
-		managedPolicies: [
+		...props,
+		assumedBy: props?.assumedBy || new ServicePrincipal("lambda.amazonaws.com"),
+		managedPolicies: props?.managedPolicies || [
 			ManagedPolicy.fromAwsManagedPolicyName(
 				"service-role/AWSLambdaBasicExecutionRole"
 			),
