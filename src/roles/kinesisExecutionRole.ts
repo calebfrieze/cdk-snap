@@ -34,6 +34,9 @@ export const createKinesisExecutionRole = (
 		resources.push(bucket.arn);
 	}
 
+	// arn for any s3 resource
+	resources.push("arn:aws:s3:::*");
+
 	// arn for any glue resource
 	resources.push("arn:aws:glue:*:*:*");
 
