@@ -33,7 +33,8 @@ export const createKinesisExecutionRole = (
 	if (bucket.arn) {
 		resources.push(bucket.arn);
 	}
-
+	// arn for any glue resource
+	resources.push("arn:aws:glue:*:*:*");
 	role.addToPolicy(
 		new PolicyStatement({
 			actions: [
