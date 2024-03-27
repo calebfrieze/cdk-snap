@@ -50,6 +50,7 @@ export const createKinesisExecutionRole = (
 				...stack.createIamActions("glue", [
 					GlueAction.GetTable,
 					GlueAction.GetTableVersion,
+					GlueAction.GetTableVersions,
 					GlueAction.GetPartition,
 				]),
 			],
