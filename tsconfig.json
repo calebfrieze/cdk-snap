@@ -36,5 +36,10 @@
 		"tools",
 		"typings"
 	],
-	"include": ["src"]
+	"include": ["src"],
+	"typedocOptions": {
+		// Comments are supported, like tsconfig.json
+		"entryPoints": ["src/index.ts"],
+		"out": "docs"
+	}
 }

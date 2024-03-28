@@ -6,25 +6,45 @@ import {
 	type RoleProps,
 } from "aws-cdk-lib/aws-iam";
 import type { CDKSnapStack } from "..";
-import { DynamoDbAction } from "../enums";
+import { CloudWatchLogsAction, DynamoDbAction } from "../enums";
 
 interface CreateLambdaExecutionRoleOptions {
 	dynamoDb?: {
-		tableName?: string;
-		resources?: string[];
-		actions: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
+		tableNames?: string[];
+		// Override default actions
+		actions?: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
+		overrideActions?: boolean;
 	};
+	enableCloudWatchLogs?: boolean;
 	policyStatements?: PolicyStatement[];
 	props?: RoleProps;
 }
 
+const defaultDynamoDbActions = [
+	DynamoDbAction.GetItem,
+	DynamoDbAction.PutItem,
+	DynamoDbAction.UpdateItem,
+	DynamoDbAction.DeleteItem,
+];
+
 /**
  * @name CreateLambdaExecutionRole
  * @description This role is used by the Lambda function to access other AWS services.
+ * @param dynamoDb.actions - Actions to either override or add to the default DynamoDB actions
+ * @param dynamoDb.overrideActions - Override default actions for DynamoDB access
+ * @param dynamoDb.tableNames - List of DynamoDB table names to access
+ * @param enableCloudWatchLogs - Enable CloudWatch Logs access
+ * @param policyStatements - Custom policy statements to add to the role
+ * @param props - Additional properties for the role
  */
 export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
-	{ dynamoDb, policyStatements, props }: CreateLambdaExecutionRoleOptions
+	{
+		dynamoDb,
+		policyStatements,
+		props,
+		enableCloudWatchLogs,
+	}: CreateLambdaExecutionRoleOptions
 ) => {
 	const role = new Role(stack, stack.resourceName("AccessRole"), {
 		...props,
@@ -36,25 +56,34 @@ export const createLambdaExecutionRole = (
 		],
 	});
 
-	if (dynamoDb?.tableName && dynamoDb?.resources) {
-		throw new Error(
-			"Cannot provide both tableName and resources in dynamoDb options. Please provide only one."
-		);
-	}
-	if (dynamoDb?.tableName) {
-		role.addToPolicy(
-			new PolicyStatement({
-				actions: stack.createIamActions("dynamodb", dynamoDb.actions),
-				resources: [stack.getDynamoDbArn(dynamoDb.tableName)],
-			})
-		);
+	// Add DynamoDB policy statements
+	const dynamoDbActions = dynamoDb?.overrideActions
+		? dynamoDb?.actions || []
+		: dynamoDb?.actions?.length
+		? [...dynamoDb?.actions, ...defaultDynamoDbActions]
+		: defaultDynamoDbActions;
+
+	if (dynamoDb?.tableNames?.length) {
+		for (const tableName of dynamoDb.tableNames) {
+			role.addToPolicy(
+				new PolicyStatement({
+					actions: stack.createIamActions("dynamodb", dynamoDbActions),
+					resources: [stack.getDynamoDbArn(tableName)],
+				})
+			);
+		}
 	}
 
-	if (dynamoDb?.resources?.length) {
+	// Add CloudWatch policy statements
+	if (enableCloudWatchLogs) {
 		role.addToPolicy(
 			new PolicyStatement({
-				actions: stack.createIamActions("dynamodb", dynamoDb.actions),
-				resources: stack.createDynamoDbResourceArns(dynamoDb.resources),
+				actions: stack.createIamActions("logs", [
+					CloudWatchLogsAction.CreateLogGroup,
+					CloudWatchLogsAction.CreateLogStream,
+					CloudWatchLogsAction.PutLogEvents,
+				]),
+				resources: ["arn:aws:logs:*:*:*"],
 			})
 		);
 	}
