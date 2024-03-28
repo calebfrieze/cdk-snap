@@ -1,4 +1,4 @@
-export const ClouWatchAction = {
+export const CloudWatchAction = {
 	All: "*",
 	DescribeAlarmHistory: "DescribeAlarmHistory",
 	DescribeAlarms: "DescribeAlarms",

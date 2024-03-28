@@ -8,6 +8,16 @@ import {
 import type { CDKSnapStack } from "..";
 import { CloudWatchLogsAction, DynamoDbAction } from "../enums";
 
+/**
+ * @name CreateLambdaExecutionRoleOptions
+ * @description Options for creating the Lambda execution role.
+ * @param dynamoDb.actions - Actions to either override or add to the default DynamoDB actions
+ * @param dynamoDb.overrideActions - Override default actions for DynamoDB access
+ * @param dynamoDb.tableNames - List of DynamoDB table names to access
+ * @param enableCloudWatchLogs - Enable CloudWatch Logs access
+ * @param policyStatements - Custom policy statements to add to the role
+ * @param props - Additional properties for the role
+ */
 interface CreateLambdaExecutionRoleOptions {
 	dynamoDb?: {
 		tableNames?: string[];
@@ -28,14 +38,8 @@ const defaultDynamoDbActions = [
 ];
 
 /**
- * @name CreateLambdaExecutionRole
+ * @name createLambdaExecutionRole
  * @description This role is used by the Lambda function to access other AWS services.
- * @param dynamoDb.actions - Actions to either override or add to the default DynamoDB actions
- * @param dynamoDb.overrideActions - Override default actions for DynamoDB access
- * @param dynamoDb.tableNames - List of DynamoDB table names to access
- * @param enableCloudWatchLogs - Enable CloudWatch Logs access
- * @param policyStatements - Custom policy statements to add to the role
- * @param props - Additional properties for the role
  */
 export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
