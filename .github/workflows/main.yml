@@ -11,6 +11,11 @@ jobs:
   release:
     needs: unit-test
     uses: ./.github/workflows/release.yml
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
+      npm_token: ${{ secrets.NPM_TOKEN }}
   docs:
     needs: release
     uses: ./.github/workflows/docs.yml
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
