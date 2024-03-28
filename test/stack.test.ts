@@ -1,12 +1,19 @@
 import { App } from "aws-cdk-lib";
-import { CDKSnapStack } from "../src";
+import { CDKSnapStack } from "../src/stack";
+
+let app: any;
+let stack: any;
+let stackName: any = "TestStack";
+let stackProps: any = {};
 
 describe("CDKSnapStack", () => {
-	let stack: CDKSnapStack;
+	beforeAll(() => {
+		app = new App();
+		stack = new CDKSnapStack(app, stackName, stackProps);
+	});
 
-	beforeEach(() => {
-		const app = new App();
-		stack = new CDKSnapStack(app, "quick-snap-test", {});
+	it("should create a stack with the provided id", () => {
+		expect(stack.stackName).toBe(stackName);
 	});
 
 	it("should create a DynamoDB ARN", () => {
@@ -16,16 +23,16 @@ describe("CDKSnapStack", () => {
 		);
 	});
 
-	it("should create DynamoDB resource ARNs", () => {
-		const arns = stack.createDynamoDbResourceArns(["TestTable1", "TestTable2"]);
-		expect(arns).toEqual([
-			`arn:aws:dynamodb:${stack.region}:${stack.account}:table/TestTable1`,
-			`arn:aws:dynamodb:${stack.region}:${stack.account}:table/TestTable2`,
-		]);
+	it("should create a Firehose ARN", () => {
+		const arn = stack.getFirehoseArn("TestStream");
+		expect(arn).toBe(
+			`arn:aws:firehose:${stack.region}:${stack.account}:deliverystream/TestStream`
+		);
 	});
 
-	it("should create IAM actions", () => {
-		const actions = stack.createIamActions("resource", ["action1", "action2"]);
-		expect(actions).toEqual(["resource:action1", "resource:action2"]);
+	it("should create a resource name based on the stack name", () => {
+		const resourceName = "TestResource";
+		const name = stack.resourceName("TestResource");
+		expect(name).toBe(`${stackName}-${resourceName}-${process.env["STAGE"]}`);
 	});
 });

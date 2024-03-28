@@ -6,11 +6,36 @@ import {
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
+
+/**
+ * @name CDKSnapApiFunctions
+ * @description API functions to add to the REST API.
+ *
+ * @param path - Path of the API function
+ * @param method - HTTP method of the API function
+ * @param function - Lambda function to integrate with the API
+ */
+interface CDKSnapApiFunctions {
+	path: string;
+	method: string;
+	function: Function;
+}
+
+/**
+ * @name CreateRestApiOptions
+ * @description Options for creating the REST API.
+ *
+ * @param description - Description of the REST API
+ * @param apiName - Name of the REST API
+ * @param apiMapping - Mapping options for the REST API
+ * @param apiFunctions - List of API functions to add to the REST API
+ * @param version - Version of the REST API
+ */
 interface CreateRestApiOptions {
-	description?: string;
-	apiName?: string;
+	apiFunctions: CDKSnapApiFunctions[];
 	apiMapping?: CreateRestApiMappingOptions;
-	apiFunctions: { path: string; method: string; function: Function }[];
+	apiName?: string;
+	description?: string;
 	version?: string;
 }
 interface CreateRestApiMappingOptions {

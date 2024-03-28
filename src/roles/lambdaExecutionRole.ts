@@ -3,33 +3,31 @@ import {
 	PolicyStatement,
 	Role,
 	ServicePrincipal,
-	type RoleProps,
 } from "aws-cdk-lib/aws-iam";
-import type { CDKSnapStack } from "..";
+import {
+	CDKSnapManagedPolicy,
+	type CDKSnapDynamoDBAccessOptions,
+	type CDKSnapStack,
+} from "..";
 import { CloudWatchLogsAction, DynamoDbAction } from "../enums";
+import { CDKSnapPrincipal } from "../principal";
+import { CDKSnapRoleOptions } from "./role.meta";
 
 /**
  * @name CreateLambdaExecutionRoleOptions
  * @description Options for creating the Lambda execution role.
- * @param dynamoDb.actions - Actions to either override or add to the default DynamoDB actions
- * @param dynamoDb.overrideActions - Override default actions for DynamoDB access
- * @param dynamoDb.tableNames - List of DynamoDB table names to access
+ *
+ * @param dynamoDb - CDKSnapDynamoDBAccessOptions for the DynamoDB table
  * @param enableCloudWatchLogs - Enable CloudWatch Logs access
- * @param policyStatements - Custom policy statements to add to the role
- * @param props - Additional properties for the role
+ * @extends CDKSnapRoleOptions
  */
-interface CreateLambdaExecutionRoleOptions {
-	dynamoDb?: {
-		tableNames?: string[];
-		// Override default actions
-		actions?: (typeof DynamoDbAction)[keyof typeof DynamoDbAction][];
-		overrideActions?: boolean;
-	};
+export interface CreateLambdaExecutionRoleOptions extends CDKSnapRoleOptions {
+	dynamoDb?: CDKSnapDynamoDBAccessOptions;
 	enableCloudWatchLogs?: boolean;
-	policyStatements?: PolicyStatement[];
-	props?: RoleProps;
 }
 
+// Defaults
+const defaultRoleName = "LambdaExecutionRole";
 const defaultDynamoDbActions = [
 	DynamoDbAction.GetItem,
 	DynamoDbAction.PutItem,
@@ -45,20 +43,27 @@ export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
 	{
 		dynamoDb,
+		enableCloudWatchLogs,
 		policyStatements,
 		props,
-		enableCloudWatchLogs,
+		roleName,
+		useStackName = true,
 	}: CreateLambdaExecutionRoleOptions
 ) => {
-	const role = new Role(stack, stack.resourceName("AccessRole"), {
-		...props,
-		assumedBy: props?.assumedBy || new ServicePrincipal("lambda.amazonaws.com"),
-		managedPolicies: props?.managedPolicies || [
-			ManagedPolicy.fromAwsManagedPolicyName(
-				"service-role/AWSLambdaBasicExecutionRole"
-			),
-		],
-	});
+	const role = new Role(
+		stack,
+		stack.buildRoleName(useStackName, defaultRoleName, roleName),
+		{
+			...props,
+			assumedBy:
+				props?.assumedBy || new ServicePrincipal(CDKSnapPrincipal.Lambda),
+			managedPolicies: props?.managedPolicies || [
+				ManagedPolicy.fromAwsManagedPolicyName(
+					CDKSnapManagedPolicy.AWSLambdaBasicExecutionRole
+				),
+			],
+		}
+	);
 
 	// Add DynamoDB policy statements
 	const dynamoDbActions = dynamoDb?.overrideActions

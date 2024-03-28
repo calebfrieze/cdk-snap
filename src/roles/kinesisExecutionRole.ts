@@ -5,6 +5,7 @@ import {
 	ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import {
+	CDKSnapBucketOptions,
 	CDKSnapStack,
 	CloudWatchLogsAction,
 	GlueAction,
@@ -12,18 +13,23 @@ import {
 	S3Action,
 } from "..";
 
-interface CreateKinesisExecutionRoleOptions {
-	// Define options for the role
-	bucket?: {
-		arn: string;
-	};
+/**
+ * @name CreateKinesisExecutionRoleOptions
+ * @description Options for creating the Kinesis execution role.
+ *
+ * @param bucket - CDKSnapBucketOptions for the S3 bucket
+ * @param policyStatements - Custom policy statements to add to the role
+ * @param props - Additional properties for the role
+ */
+export interface CreateKinesisExecutionRoleOptions {
+	bucket?: CDKSnapBucketOptions;
 	policyStatements?: PolicyStatement[];
 	props?: RoleProps;
 }
 
 /**
  * @name createKinesisExecutionRole
- * @description This role is used by the Kinesis Firehose Delivery Stream to access other AWS services.
+ * @description This role should be used by the Kinesis Firehose Delivery Stream to access other AWS services.
  */
 export const createKinesisExecutionRole = (
 	stack: CDKSnapStack,

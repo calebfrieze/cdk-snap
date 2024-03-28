@@ -1,11 +1,22 @@
+/**
+ * @name CloudWatchAction
+ * @description Actions that can be performed on CloudWatch resources
+ */
 export const CloudWatchAction = {
 	All: "*",
+	DeleteAlarms: "DeleteAlarms",
+	DeleteDashboards: "DeleteDashboards",
+	DeleteInsightRules: "DeleteInsightRules",
 	DescribeAlarmHistory: "DescribeAlarmHistory",
 	DescribeAlarms: "DescribeAlarms",
 	DescribeAlarmsForMetric: "DescribeAlarmsForMetric",
+	DescribeInsightRules: "DescribeInsightRules",
 	DisableAlarmActions: "DisableAlarmActions",
+	DisableInsightRules: "DisableInsightRules",
 	EnableAlarmActions: "EnableAlarmActions",
+	EnableInsightRules: "EnableInsightRules",
 	GetDashboard: "GetDashboard",
+	GetInsightRuleReport: "GetInsightRuleReport",
 	GetMetricData: "GetMetricData",
 	GetMetricStatistics: "GetMetricStatistics",
 	GetMetricWidgetImage: "GetMetricWidgetImage",
@@ -17,11 +28,4 @@ export const CloudWatchAction = {
 	SetAlarmState: "SetAlarmState",
 	TagResource: "TagResource",
 	UntagResource: "UntagResource",
-	DeleteAlarms: "DeleteAlarms",
-	DeleteDashboards: "DeleteDashboards",
-	DeleteInsightRules: "DeleteInsightRules",
-	DescribeInsightRules: "DescribeInsightRules",
-	DisableInsightRules: "DisableInsightRules",
-	EnableInsightRules: "EnableInsightRules",
-	GetInsightRuleReport: "GetInsightRuleReport",
 };

@@ -1,10 +1,14 @@
+/**
+ * @name FirehoseAction
+ * @description Actions that can be performed on Firehose resources
+ */
 export const FirehoseAction = {
 	All: "*",
-	GetAll: "Get*",
-	ListAll: "List*",
 	CreateDeliveryStream: "CreateDeliveryStream",
 	DeleteDeliveryStream: "DeleteDeliveryStream",
 	DescribeDeliveryStream: "DescribeDeliveryStream",
+	GetAll: "Get*",
+	ListAll: "List*",
 	ListDeliveryStreams: "ListDeliveryStreams",
 	ListTagsForDeliveryStream: "ListTagsForDeliveryStream",
 	PutRecord: "PutRecord",

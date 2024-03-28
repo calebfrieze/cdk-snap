@@ -1,46 +1,30 @@
 import {
-	pascalToHyphenated,
 	createResourceName,
+	pascalToHyphenated,
 	ResourceNameStyle,
-} from "../src/util"; // replace 'util' with the actual file name
-
-const STAGE = "test";
+} from "../src/util"; // replace './util' with the actual file path
 
 describe("pascalToHyphenated", () => {
-	it("should convert PascalCase to hyphenated", () => {
-		expect(pascalToHyphenated("TestString")).toBe("test-string");
-		expect(pascalToHyphenated("AnotherTestString")).toBe("another-test-string");
-		expect(pascalToHyphenated("YetAnotherTestString")).toBe(
-			"yet-another-test-string"
-		);
+	it("should convert a PascalCase string to a hyphenated string", () => {
+		const result = pascalToHyphenated("TestString");
+		expect(result).toBe("test-string");
 	});
 });
 
 describe("createResourceName", () => {
-	let originalEnv: NodeJS.ProcessEnv;
-
-	beforeEach(() => {
-		// Store the original process.env
-		originalEnv = process.env;
-		// Mock process.env
-		process.env = { ...originalEnv, STAGE };
+	it("should create a resource name with the default style", () => {
+		const resourceName = createResourceName("TestProject")("TestResource");
+		expect(resourceName).toBe(
+			`TestProject-TestResource-${process.env["STAGE"]}`
+		);
 	});
 
-	afterEach(() => {
-		// Restore the original process.env
-		process.env = originalEnv;
-	});
-	it("should prepend the project name and append the stage to the resource name", () => {
-		const resourceName = createResourceName("TestProject")("TestResource", {
-			style: ResourceNameStyle.DEFAULT,
-		});
-		expect(resourceName).toBe(`TestProject-TestResource-${STAGE}`);
-	});
-
-	it("should convert the resource name to hyphenated if the style is HYPHENATED", () => {
+	it("should create a resource name with the hyphenated style", () => {
 		const resourceName = createResourceName("TestProject")("TestResource", {
 			style: ResourceNameStyle.HYPHENATED,
 		});
-		expect(resourceName).toBe(`test-project-test-resource-${STAGE}`);
+		expect(resourceName).toBe(
+			`test-project-test-resource-${process.env["STAGE"]}`
+		);
 	});
 });

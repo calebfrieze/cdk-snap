@@ -1,7 +1,11 @@
+/**
+ * @name LambdaActions
+ * @description Actions that can be performed on Lambda functions
+ */
 export const LambdaAction = {
-	All: "*",
 	AddLayerVersionPermission: "AddLayerVersionPermission",
 	AddPermission: "AddPermission",
+	All: "*",
 	CreateAlias: "CreateAlias",
 	CreateEventSourceMapping: "CreateEventSourceMapping",
 	CreateFunction: "CreateFunction",
@@ -22,14 +26,14 @@ export const LambdaAction = {
 	GetLayerVersion: "GetLayerVersion",
 	GetLayerVersionPolicy: "GetLayerVersionPolicy",
 	GetPolicy: "GetPolicy",
-	InvokeFunction: "InvokeFunction",
 	InvokeAsync: "InvokeAsync",
+	InvokeFunction: "InvokeFunction",
 	ListAliases: "ListAliases",
 	ListEventSourceMappings: "ListEventSourceMappings",
 	ListFunctionEventInvokeConfigs: "ListFunctionEventInvokeConfigs",
 	ListFunctions: "ListFunctions",
-	ListLayerVersions: "ListLayerVersions",
 	ListLayers: "ListLayers",
+	ListLayerVersions: "ListLayerVersions",
 	ListProvisionedConcurrencyConfigs: "ListProvisionedConcurrencyConfigs",
 	ListTags: "ListTags",
 	ListVersionsByFunction: "ListVersionsByFunction",

@@ -1,31 +1,18 @@
 name: Release
-
 on:
-  release:
-    types: [published]
-
+  push:
+    branches:
+      - main
 jobs:
   release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install Node
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: "20"
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Install Dependencies
-        run: |
-          npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to npm
-        run: npm publish
+          node-version: 20
+      - run: npm ci
+      - run: npx semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          GH_TOKEN: ${{ secrets.COMMIT_BOT_PAT }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
