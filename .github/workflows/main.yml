@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "README.md"
+jobs:
+  unit-test:
+    uses: ./.github/workflows/test.yml
+  release:
+    needs: unit-test
+    uses: ./.github/workflows/release.yml
+  docs:
+    needs: release
+    uses: ./.github/workflows/docs.yml

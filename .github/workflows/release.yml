@@ -1,8 +1,5 @@
 name: Release
-on:
-  push:
-    branches:
-      - main
+on: workflow_call
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -12,6 +9,7 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
+      - run: npm run build
       - run: npx semantic-release
         env:
           GH_TOKEN: ${{ secrets.COMMIT_BOT_PAT }}
