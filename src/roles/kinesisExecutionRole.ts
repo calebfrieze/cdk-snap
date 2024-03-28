@@ -21,6 +21,10 @@ interface CreateKinesisExecutionRoleOptions {
 	props?: RoleProps;
 }
 
+/**
+ * @name CreateKinesisExecutionRole
+ * @description This role is used by the Kinesis Firehose Delivery Stream to access other AWS services.
+ */
 export const createKinesisExecutionRole = (
 	stack: CDKSnapStack,
 	{ bucket, policyStatements, props }: CreateKinesisExecutionRoleOptions

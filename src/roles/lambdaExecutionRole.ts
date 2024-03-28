@@ -18,6 +18,10 @@ interface CreateLambdaExecutionRoleOptions {
 	props?: RoleProps;
 }
 
+/**
+ * @name CreateLambdaExecutionRole
+ * @description This role is used by the Lambda function to access other AWS services.
+ */
 export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
 	{ dynamoDb, policyStatements, props }: CreateLambdaExecutionRoleOptions

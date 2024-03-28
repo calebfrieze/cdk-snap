@@ -8,9 +8,12 @@ interface CreateFunctionOptions {
 	environment?: { [key: string]: string };
 	location: string;
 	role?: Role;
-	props?: FunctionProps;
+	props?: Partial<FunctionProps>;
 }
-
+/**
+ * @name CreateCompiledFunction
+ * @description This function creates a Lambda function with the provided options.
+ */
 export const createCompiledFunction = (
 	stack: Construct,
 	{ name, environment, location, role, props }: CreateFunctionOptions
