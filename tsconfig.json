@@ -40,6 +40,8 @@
 	"typedocOptions": {
 		// Comments are supported, like tsconfig.json
 		"entryPoints": ["src/index.ts"],
-		"out": "docs"
+		"out": "docs",
+		"plugin": ["typedoc-material-theme"],
+		"themeColor": "#0438c7"
 	}
 }
