@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.COMMIT_BOT_PAT }}
       - name: Install dependencies
         run: npm ci
       - name: Build
