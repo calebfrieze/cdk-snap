@@ -18,7 +18,7 @@ import { CDKSnapRoleOptions } from "./role.meta";
  * @description Options for creating the Lambda execution role.
  *
  * @param dynamoDb - CDKSnapDynamoDBAccessOptions for the DynamoDB table
- * @param enableCloudWatchLogs - Enable CloudWatch Logs access
+ * @param enableCloudWatchLogs - Enable CloudWatch Logs access. Defaults to true
  * @extends CDKSnapRoleOptions
  */
 export interface CreateLambdaExecutionRoleOptions extends CDKSnapRoleOptions {
