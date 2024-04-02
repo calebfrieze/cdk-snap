@@ -2,6 +2,7 @@ import { Role } from "aws-cdk-lib/aws-iam";
 import { Code, Function, FunctionProps, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Construct } from "constructs";
 import * as path from "path";
+import { CDKSnapStack } from ".";
 
 /**
  * @name CreateFunctionOptions
@@ -10,6 +11,7 @@ import * as path from "path";
  * @param environment - Environment variables for the function
  * @param location - Location of the function code, combined with the current working directory
  * @param name - Name of the function
+ * @param handler - Handler for the function
  * @param props - Additional properties for the function
  * @param role - Role for the function
  */
@@ -17,6 +19,7 @@ export interface CreateFunctionOptions {
 	environment?: Record<string, string>;
 	location: string;
 	name: string;
+	handler?: string;
 	props?: Partial<FunctionProps>;
 	role?: Role;
 }
@@ -44,5 +47,28 @@ export const createCompiledFunction = (
 		handler: props?.handler || "main",
 		role: props?.role || role,
 		runtime: props?.runtime || Runtime.PROVIDED_AL2023,
+	});
+};
+
+export const createPythonFunction = (
+	stack: CDKSnapStack,
+	{ role, props, name, location, environment, handler }: CreateFunctionOptions
+) => {
+	if (!role && !props?.role) {
+		throw new Error("Role must be provided for the function.");
+	}
+
+	return new Function(stack, stack.resourceName(name), {
+		...props,
+		runtime: props?.runtime || Runtime.PYTHON_3_12,
+		role: props?.role || role,
+		handler:
+			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
+		code: props?.code || Code.fromAsset(path.join(process.cwd(), location)),
+		environment: props?.environment || {
+			STAGE: process.env["STAGE"] || "",
+			REGION: process.env["REGION"] || "",
+			...environment,
+		},
 	});
 };

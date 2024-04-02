@@ -4,7 +4,7 @@
  */
 export const S3Action = {
 	AbortMultipartUpload: "AbortMultipartUpload",
-	All: "*",
+	All: "s3:*",
 	CreateAccessPoint: "CreateAccessPoint",
 	CreateBucket: "CreateBucket",
 	CreateJob: "CreateJob",

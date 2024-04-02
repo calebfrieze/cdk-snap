@@ -3,7 +3,7 @@
  * @description Actions that can be performed on Firehose resources
  */
 export const FirehoseAction = {
-	All: "*",
+	All: "firehose:*",
 	CreateDeliveryStream: "CreateDeliveryStream",
 	DeleteDeliveryStream: "DeleteDeliveryStream",
 	DescribeDeliveryStream: "DescribeDeliveryStream",

@@ -3,7 +3,7 @@
  * @description Actions that can be performed on DynamoDB resources
  */
 export const DynamoDbAction = {
-	All: "*",
+	All: "dynamodb:*",
 	BatchGetItem: "BatchGetItem",
 	BatchWriteItem: "BatchWriteItem",
 	ConditionCheck: "ConditionCheck",

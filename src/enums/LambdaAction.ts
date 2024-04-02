@@ -5,7 +5,7 @@
 export const LambdaAction = {
 	AddLayerVersionPermission: "AddLayerVersionPermission",
 	AddPermission: "AddPermission",
-	All: "*",
+	All: "lambda:*",
 	CreateAlias: "CreateAlias",
 	CreateEventSourceMapping: "CreateEventSourceMapping",
 	CreateFunction: "CreateFunction",

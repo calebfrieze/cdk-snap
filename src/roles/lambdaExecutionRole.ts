@@ -43,7 +43,7 @@ export const createLambdaExecutionRole = (
 	stack: CDKSnapStack,
 	{
 		dynamoDb,
-		enableCloudWatchLogs,
+		enableCloudWatchLogs = true,
 		policyStatements,
 		props,
 		roleName,

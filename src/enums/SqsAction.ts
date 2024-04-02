@@ -1,0 +1,16 @@
+export const SqsAction = {
+	All: "sqs:*",
+	ChangeMessageVisibility: "sqs:ChangeMessageVisibility",
+	ChangeMessageVisibilityBatch: "sqs:ChangeMessageVisibilityBatch",
+	DeleteMessage: "sqs:DeleteMessage",
+	DeleteMessageBatch: "sqs:DeleteMessageBatch",
+	DeleteQueue: "sqs:DeleteQueue",
+	GetQueueAttributes: "sqs:GetQueueAttributes",
+	GetQueueUrl: "sqs:GetQueueUrl",
+	ListQueues: "sqs:ListQueues",
+	PurgeQueue: "sqs:PurgeQueue",
+	ReceiveMessage: "sqs:ReceiveMessage",
+	SendMessage: "sqs:SendMessage",
+	SendMessageBatch: "sqs:SendMessageBatch",
+	SetQueueAttributes: "sqs:SetQueueAttributes",
+};
