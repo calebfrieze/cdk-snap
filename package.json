@@ -14,6 +14,7 @@
 		"docs": "typedoc"
 	},
 	"devDependencies": {
+		"@semantic-release/git": "^10.0.1",
 		"@types/bun": "latest",
 		"@types/jest": "^29.5.12",
 		"aws-cdk": "2.132.0",

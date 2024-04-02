@@ -3,7 +3,7 @@
  * @description Actions that can be performed on Glue resources
  */
 export const GlueAction = {
-	All: "*",
+	All: "glue:*",
 	BatchCreatePartition: "BatchCreatePartition",
 	BatchDeleteConnection: "BatchDeleteConnection",
 	BatchDeletePartition: "BatchDeletePartition",

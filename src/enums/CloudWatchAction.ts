@@ -3,7 +3,7 @@
  * @description Actions that can be performed on CloudWatch resources
  */
 export const CloudWatchAction = {
-	All: "*",
+	All: "cloudwatch:*",
 	DeleteAlarms: "DeleteAlarms",
 	DeleteDashboards: "DeleteDashboards",
 	DeleteInsightRules: "DeleteInsightRules",

@@ -3,7 +3,7 @@
  * @description Actions that can be performed on CloudWatch Logs resources
  */
 export const CloudWatchLogsAction = {
-	All: "*",
+	All: "logs:*",
 	CreateLogGroup: "CreateLogGroup",
 	CreateLogStream: "CreateLogStream",
 	DeleteLogGroup: "DeleteLogGroup",
