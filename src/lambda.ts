@@ -50,6 +50,10 @@ export const createCompiledFunction = (
 	});
 };
 
+/**
+ * @name createPythonFunction
+ * @description This function creates a Lambda function with the provided options. Uses Python 3.12 as default
+ */
 export const createPythonFunction = (
 	stack: CDKSnapStack,
 	{ role, props, name, location, environment, handler }: CreateFunctionOptions
@@ -61,6 +65,33 @@ export const createPythonFunction = (
 	return new Function(stack, stack.resourceName(name), {
 		...props,
 		runtime: props?.runtime || Runtime.PYTHON_3_12,
+		role: props?.role || role,
+		handler:
+			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
+		code: props?.code || Code.fromAsset(path.join(process.cwd(), location)),
+		environment: props?.environment || {
+			STAGE: process.env["STAGE"] || "",
+			REGION: process.env["REGION"] || "",
+			...environment,
+		},
+	});
+};
+
+/**
+ * @name createJavascriptFunction
+ * @description This function creates a Lambda function with the provided options. Uses NodeJS 20 as default
+ */
+export const createJavascriptFunction = (
+	stack: CDKSnapStack,
+	{ role, props, name, location, environment, handler }: CreateFunctionOptions
+) => {
+	if (!role && !props?.role) {
+		throw new Error("Role must be provided for the function.");
+	}
+
+	return new Function(stack, stack.resourceName(name), {
+		...props,
+		runtime: props?.runtime || Runtime.NODEJS_20_X,
 		role: props?.role || role,
 		handler:
 			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
