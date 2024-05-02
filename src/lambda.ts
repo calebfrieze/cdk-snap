@@ -93,8 +93,7 @@ export const createJavascriptFunction = (
 		...props,
 		runtime: props?.runtime || Runtime.NODEJS_20_X,
 		role: props?.role || role,
-		handler:
-			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
+		handler: props?.handler || `${handler || "handler"}`,
 		code: props?.code || Code.fromAsset(path.join(process.cwd(), location)),
 		environment: props?.environment || {
 			STAGE: process.env["STAGE"] || "",
