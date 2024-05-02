@@ -54,6 +54,10 @@ export const createCompiledFunction = (
  * @name createPythonFunction
  * @description This function creates a Lambda function with the provided options. Uses Python 3.12 as default
  */
+/**
+ * @name createPythonFunction
+ * @description This function creates a Lambda function with the provided options. Uses Python 3.12 as default
+ */
 export const createPythonFunction = (
 	stack: CDKSnapStack,
 	{ role, props, name, location, environment, handler }: CreateFunctionOptions
