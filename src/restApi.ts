@@ -28,7 +28,7 @@ interface CDKSnapApiFunctions {
  */
 interface CDKSnapApiResource {
 	path: string;
-	resources: CDKSnapApiResource[];
+	resources?: CDKSnapApiResource[];
 	method?: string;
 	function?: Function;
 }
