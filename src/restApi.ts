@@ -25,6 +25,11 @@ interface CDKSnapApiFunctions {
 /**
  * @name CDKSnapApiResource
  * @description API resources to add to the REST API.
+ *
+ * @param path - Path of the API resource
+ * @param resources - List of resources to add to the API resource
+ * @param method - HTTP method of the API resource
+ * @param function - Lambda function to integrate with the API resource
  */
 interface CDKSnapApiResource {
 	path: string;
