@@ -57,12 +57,18 @@ export const createRestApi = (
 	const v1RestApi = restApi.root.addResource(version || "v1");
 
 	for (const apiFunction of apiFunctions) {
-		v1RestApi
-			.addResource(apiFunction.path)
-			.addMethod(
-				apiFunction.method,
-				new LambdaIntegration(apiFunction.function)
-			);
+		const resources = apiFunction.path.split("/");
+
+		for (let resource of resources) {
+			if (resource === "") {
+				continue;
+			}
+			v1RestApi.addResource(resource);
+		}
+		v1RestApi.addMethod(
+			apiFunction.method,
+			new LambdaIntegration(apiFunction.function)
+		);
 	}
 	if (!apiMapping) {
 		return restApi;
