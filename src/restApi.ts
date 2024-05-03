@@ -49,7 +49,7 @@ interface CDKSnapApiResource {
  * @param version - Version of the REST API
  */
 interface CreateRestApiOptions {
-	apiFunctions: CDKSnapApiFunctions[];
+	apiFunctions?: CDKSnapApiFunctions[];
 	resources?: CDKSnapApiResource[];
 	apiMapping?: CreateRestApiMappingOptions;
 	apiName?: string;
@@ -104,13 +104,15 @@ export const createRestApi = (
 		attachResources(versionedRestApi, resources);
 	}
 
-	for (const apiFunction of apiFunctions) {
-		versionedRestApi
-			.addResource(apiFunction.path)
-			.addMethod(
-				apiFunction.method,
-				new LambdaIntegration(apiFunction.function)
-			);
+	if (apiFunctions) {
+		for (const apiFunction of apiFunctions) {
+			versionedRestApi
+				.addResource(apiFunction.path)
+				.addMethod(
+					apiFunction.method,
+					new LambdaIntegration(apiFunction.function)
+				);
+		}
 	}
 	if (!apiMapping) {
 		return restApi;
