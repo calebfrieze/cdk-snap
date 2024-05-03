@@ -3,6 +3,7 @@ import {
 	DomainName,
 	LambdaIntegration,
 	RestApi,
+	Resource,
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
@@ -22,6 +23,17 @@ interface CDKSnapApiFunctions {
 }
 
 /**
+ * @name CDKSnapApiResource
+ * @description API resources to add to the REST API.
+ */
+interface CDKSnapApiResource {
+	path: string;
+	resources: CDKSnapApiResource[];
+	method?: string;
+	function?: Function;
+}
+
+/**
  * @name CreateRestApiOptions
  * @description Options for creating the REST API.
  *
@@ -33,20 +45,47 @@ interface CDKSnapApiFunctions {
  */
 interface CreateRestApiOptions {
 	apiFunctions: CDKSnapApiFunctions[];
+	resources?: CDKSnapApiResource[];
 	apiMapping?: CreateRestApiMappingOptions;
 	apiName?: string;
 	description?: string;
 	version?: string;
 }
+
 interface CreateRestApiMappingOptions {
 	basePath: string;
 	domainName: string;
 	domainNameAliasHostedZoneId: string;
 	domainNameAliasTarget: string;
 }
+
+const attachResources = (
+	rootResource: Resource,
+	resources: CDKSnapApiResource[]
+) => {
+	for (let resource of resources) {
+		const apiResource = rootResource.addResource(resource.path);
+		if (resource.resources) {
+			attachResources(apiResource, resource.resources);
+		}
+		if (resource.function) {
+			apiResource.addMethod(
+				resource.method || "GET",
+				new LambdaIntegration(resource.function)
+			);
+		}
+	}
+};
+
 export const createRestApi = (
 	stack: CDKSnapStack,
-	{ apiFunctions, description, apiMapping, version }: CreateRestApiOptions
+	{
+		apiFunctions,
+		description,
+		apiMapping,
+		version,
+		resources,
+	}: CreateRestApiOptions
 ): RestApi => {
 	const restApi = new RestApi(stack, stack.resourceName("RestApi"), {
 		restApiName: stack.resourceName("RestApi"),
@@ -54,21 +93,19 @@ export const createRestApi = (
 	});
 
 	// We version the API to avoid breaking changes.
-	const v1RestApi = restApi.root.addResource(version || "v1");
+	const versionedRestApi = restApi.root.addResource(version || "v1");
+
+	if (resources) {
+		attachResources(versionedRestApi, resources);
+	}
 
 	for (const apiFunction of apiFunctions) {
-		const resources = apiFunction.path.split("/");
-
-		for (let resource of resources) {
-			if (resource === "") {
-				continue;
-			}
-			v1RestApi.addResource(resource);
-		}
-		v1RestApi.addMethod(
-			apiFunction.method,
-			new LambdaIntegration(apiFunction.function)
-		);
+		versionedRestApi
+			.addResource(apiFunction.path)
+			.addMethod(
+				apiFunction.method,
+				new LambdaIntegration(apiFunction.function)
+			);
 	}
 	if (!apiMapping) {
 		return restApi;
