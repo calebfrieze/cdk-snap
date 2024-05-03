@@ -58,6 +58,7 @@ export const createRestApi = (
 
 	for (const apiFunction of apiFunctions) {
 		const resources = apiFunction.path.split("/");
+
 		for (let resource of resources) {
 			if (resource === "") {
 				continue;
