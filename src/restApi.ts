@@ -15,7 +15,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
  *
  * @param path - Path of the API function
  * @param method - HTTP method of the API function
- * @param function - Lambda function to integrate with the API
+ * @param function - Lambda function to integrate with the API, can also be NodeJSFunction
  */
 interface CDKSnapApiFunctions {
 	path: string;
