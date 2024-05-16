@@ -7,6 +7,7 @@ import {
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 
 /**
  * @name CDKSnapApiFunctions
@@ -19,7 +20,7 @@ import type { CDKSnapStack } from "./stack";
 interface CDKSnapApiFunctions {
 	path: string;
 	method: string;
-	function: Function;
+	function: Function | NodejsFunction;
 }
 
 /**
@@ -35,7 +36,7 @@ interface CDKSnapApiResource {
 	path: string;
 	resources?: CDKSnapApiResource[];
 	method?: string;
-	function?: Function;
+	function?: Function | NodejsFunction;
 }
 
 /**
