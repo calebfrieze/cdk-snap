@@ -30,7 +30,7 @@ interface CDKSnapApiFunctions {
  * @param path - Path of the API resource
  * @param resources - List of resources to add to the API resource
  * @param method - HTTP method of the API resource
- * @param function - Lambda function to integrate with the API resource
+ * @param function - Lambda function to integrate with the API resource, also allows for NodeJSFunction
  */
 interface CDKSnapApiResource {
 	path: string;
