@@ -35,8 +35,12 @@ interface CDKSnapApiFunctions {
 interface CDKSnapApiResource {
 	path: string;
 	resources?: CDKSnapApiResource[];
-	method?: string;
-	function?: Function | NodejsFunction;
+	methods?: CDKSnapApiResourceMethod[];
+}
+
+interface CDKSnapApiResourceMethod {
+	verb: string;
+	function: Function | NodejsFunction;
 }
 
 /**
@@ -74,11 +78,14 @@ const attachResources = (
 		if (resource.resources) {
 			attachResources(apiResource, resource.resources);
 		}
-		if (resource.function) {
-			apiResource.addMethod(
-				resource.method || "GET",
-				new LambdaIntegration(resource.function)
-			);
+
+		if (resource.methods?.length) {
+			for (let method of resource.methods) {
+				apiResource.addMethod(
+					method.verb,
+					new LambdaIntegration(method.function)
+				);
+			}
 		}
 	}
 };
