@@ -17,7 +17,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
  * @param method - HTTP method of the API function
  * @param function - Lambda function to integrate with the API, can also be NodeJSFunction
  */
-interface CDKSnapApiFunctions {
+export interface CDKSnapApiFunctions {
 	path: string;
 	method: string;
 	function: Function | NodejsFunction;
@@ -32,13 +32,13 @@ interface CDKSnapApiFunctions {
  * @param method - HTTP method of the API resource
  * @param function - Lambda function to integrate with the API resource, also allows for NodeJSFunction
  */
-interface CDKSnapApiResource {
+export interface CDKSnapApiResource {
 	path: string;
 	resources?: CDKSnapApiResource[];
 	methods?: CDKSnapApiResourceMethod[];
 }
 
-interface CDKSnapApiResourceMethod {
+export interface CDKSnapApiResourceMethod {
 	verb: string;
 	function: Function | NodejsFunction;
 }
@@ -53,7 +53,7 @@ interface CDKSnapApiResourceMethod {
  * @param apiFunctions - List of API functions to add to the REST API
  * @param version - Version of the REST API
  */
-interface CreateRestApiOptions {
+export interface CreateRestApiOptions {
 	apiFunctions?: CDKSnapApiFunctions[];
 	resources?: CDKSnapApiResource[];
 	apiMapping?: CreateRestApiMappingOptions;
@@ -62,7 +62,7 @@ interface CreateRestApiOptions {
 	version?: string;
 }
 
-interface CreateRestApiMappingOptions {
+export interface CreateRestApiMappingOptions {
 	basePath: string;
 	domainName: string;
 	domainNameAliasHostedZoneId: string;
@@ -78,6 +78,14 @@ const attachResources = (
 		if (resource.resources) {
 			attachResources(apiResource, resource.resources);
 		}
+
+		if (resource.methods?.length) {
+			for (let method of resource.methods) {
+				apiResource.addMethod(
+					method.verb,
+					new LambdaIntegration(method.function)
+				);
+			}
 
 		if (resource.methods?.length) {
 			for (let method of resource.methods) {
