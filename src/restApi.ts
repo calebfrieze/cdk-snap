@@ -86,6 +86,14 @@ const attachResources = (
 					new LambdaIntegration(method.function)
 				);
 			}
+
+		if (resource.methods?.length) {
+			for (let method of resource.methods) {
+				apiResource.addMethod(
+					method.verb,
+					new LambdaIntegration(method.function)
+				);
+			}
 		}
 	}
 };
