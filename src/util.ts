@@ -37,3 +37,24 @@ export const createResourceName =
 				}`;
 		}
 	};
+
+export function mergeObjects(
+	obj1: Record<string, any>,
+	obj2: Record<string, any>
+): Record<string, any> {
+	for (let key in obj2) {
+		if (obj2.hasOwnProperty(key)) {
+			if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
+				obj1[key] = [...obj1[key], ...obj2[key]];
+			} else if (
+				typeof obj1[key] === "object" &&
+				typeof obj2[key] === "object"
+			) {
+				obj1[key] = mergeObjects(obj1[key], obj2[key]);
+			} else {
+				obj1[key] = obj2[key];
+			}
+		}
+	}
+	return obj1;
+}
