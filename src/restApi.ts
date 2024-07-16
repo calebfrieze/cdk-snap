@@ -8,6 +8,7 @@ import {
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { mergeResources } from "./util";
 
 /**
  * @name CDKSnapApiFunctions
@@ -109,7 +110,7 @@ export const createRestApi = (
 	const versionedRestApi = restApi.root.addResource(version || "v1");
 
 	if (resources) {
-		attachResources(versionedRestApi, resources);
+		attachResources(versionedRestApi, mergeResources(resources));
 	}
 
 	if (apiFunctions) {

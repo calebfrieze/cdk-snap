@@ -1,3 +1,5 @@
+import { CDKSnapApiResource } from "./restApi";
+
 /**
  * Takes in a PascalCase string and returns a hyphenated string.
  */
@@ -38,23 +40,21 @@ export const createResourceName =
 		}
 	};
 
-export function mergeObjects(
-	obj1: Record<string, any>,
-	obj2: Record<string, any>
-): Record<string, any> {
-	for (let key in obj2) {
-		if (obj2.hasOwnProperty(key)) {
-			if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
-				obj1[key] = [...obj1[key], ...obj2[key]];
-			} else if (
-				typeof obj1[key] === "object" &&
-				typeof obj2[key] === "object"
-			) {
-				obj1[key] = mergeObjects(obj1[key], obj2[key]);
+export function mergeResources(
+	...res: CDKSnapApiResource[][]
+): CDKSnapApiResource[] {
+	return res.reduce((acc, curr) => {
+		curr.forEach((r2) => {
+			let r1 = acc.find((r) => r.path === r2.path);
+			if (r1) {
+				r1.resources = r1.resources || [];
+				r1.methods = r1.methods || [];
+				r1.resources = mergeResources(...[r1.resources, r2.resources || []]);
+				r1.methods = [...r1.methods, ...(r2.methods || [])];
 			} else {
-				obj1[key] = obj2[key];
+				acc.push(r2);
 			}
-		}
-	}
-	return obj1;
+		});
+		return acc;
+	}, []);
 }
