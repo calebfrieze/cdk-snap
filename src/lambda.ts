@@ -85,7 +85,7 @@ export const createPythonFunction = (
 
 /**
  * @name createJavascriptFunction
- * @description Function to create a Lambda function with the provided options. Uses NodeJS 20 as default
+ * @description Function to create a Lambda function with the provided options. Uses NodeJS 20 as default 
  */
 export const createJavascriptFunction = (
 	stack: CDKSnapStack,
