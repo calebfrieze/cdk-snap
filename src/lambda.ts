@@ -72,7 +72,9 @@ export const createPythonFunction = (
 		role: props?.role || role,
 		handler:
 			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
-		code: props?.code || Code.fromAsset(path.join(process.cwd(), location)),
+		code:
+			props?.code ||
+			Code.fromAsset(path.join(process.cwd(), location.split(".")[0])),
 		environment: props?.environment || {
 			STAGE: process.env["STAGE"] || "",
 			REGION: process.env["REGION"] || "",
