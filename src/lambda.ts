@@ -66,15 +66,21 @@ export const createPythonFunction = (
 		throw new Error("Role must be provided for the function.");
 	}
 
+	const handlerFromLocation = location.split("/");
+	handlerFromLocation.shift();
+
 	return new Function(stack, stack.resourceName(name), {
 		...props,
 		runtime: props?.runtime || Runtime.PYTHON_3_12,
 		role: props?.role || role,
 		handler:
-			props?.handler || `${location.replace("/", ".")}.${handler || "handler"}`,
+			props?.handler ||
+			`${handlerFromLocation.join("/").replace("/", ".")}.${
+				handler || "handler"
+			}`,
 		code:
 			props?.code ||
-			Code.fromAsset(path.join(process.cwd(), location.split(".")[0])),
+			Code.fromAsset(path.join(__dirname, location.split("/")[0])),
 		environment: props?.environment || {
 			STAGE: process.env["STAGE"] || "",
 			REGION: process.env["REGION"] || "",
