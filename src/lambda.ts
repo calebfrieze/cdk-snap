@@ -100,7 +100,7 @@ export const createJavascriptFunction = (
 		runtime: props?.runtime || Runtime.NODEJS_20_X,
 		role: props?.role || role,
 		handler: props?.handler || `${handler || "handler"}`,
-		code: props?.code || Code.fromAsset(path.join(process.cwd(), location)),
+		code: props?.code || Code.fromAsset(path.join(process.cwd(), `${location}.py`)),
 		environment: props?.environment || {
 			STAGE: process.env["STAGE"] || "",
 			REGION: process.env["REGION"] || "",
