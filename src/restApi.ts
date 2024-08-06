@@ -4,6 +4,7 @@ import {
 	LambdaIntegration,
 	RestApi,
 	Resource,
+	RestApiProps,
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
@@ -61,6 +62,7 @@ export interface CreateRestApiOptions {
 	apiName?: string;
 	description?: string;
 	version?: string;
+	props?: RestApiProps;
 }
 
 export interface CreateRestApiMappingOptions {
@@ -99,11 +101,13 @@ export const createRestApi = (
 		apiMapping,
 		version,
 		resources,
+		props,
 	}: CreateRestApiOptions
 ): RestApi => {
 	const restApi = new RestApi(stack, stack.resourceName("RestApi"), {
 		restApiName: stack.resourceName("RestApi"),
 		description: description || "This is a REST API",
+		...props,
 	});
 
 	// We version the API to avoid breaking changes.
