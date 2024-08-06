@@ -54,6 +54,7 @@ export interface CDKSnapApiResourceMethod {
  * @param apiMapping - Mapping options for the REST API
  * @param apiFunctions - List of API functions to add to the REST API
  * @param version - Version of the REST API
+ * @param props - Additional properties for the REST API
  */
 export interface CreateRestApiOptions {
 	apiFunctions?: CDKSnapApiFunctions[];
