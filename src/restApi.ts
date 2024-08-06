@@ -4,6 +4,7 @@ import {
 	LambdaIntegration,
 	RestApi,
 	Resource,
+	MethodOptions,
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import type { CDKSnapStack } from "./stack";
@@ -22,6 +23,7 @@ export interface CDKSnapApiFunctions {
 	path: string;
 	method: string;
 	function: Function | NodejsFunction;
+	options?: MethodOptions;
 }
 
 /**
@@ -119,7 +121,8 @@ export const createRestApi = (
 				.addResource(apiFunction.path)
 				.addMethod(
 					apiFunction.method,
-					new LambdaIntegration(apiFunction.function)
+					new LambdaIntegration(apiFunction.function),
+					apiFunction.options
 				);
 		}
 	}
