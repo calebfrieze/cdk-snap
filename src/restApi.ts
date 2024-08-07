@@ -23,7 +23,7 @@ export interface CDKSnapApiFunctions {
 	path: string;
 	method: string;
 	function: Function | NodejsFunction;
-	options?: MethodOptions;
+	methodOptions?: MethodOptions;
 }
 
 /**
@@ -122,7 +122,7 @@ export const createRestApi = (
 				.addMethod(
 					apiFunction.method,
 					new LambdaIntegration(apiFunction.function),
-					apiFunction.options
+					apiFunction.methodOptions
 				);
 		}
 	}
