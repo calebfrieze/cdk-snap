@@ -2,13 +2,14 @@ import {
 	BasePathMapping,
 	DomainName,
 	LambdaIntegration,
-	RestApi,
+	MethodOptions,
 	Resource,
-	RestApiProps,
+	RestApi,
+	RestApiProps
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
-import type { CDKSnapStack } from "./stack";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import type { CDKSnapStack } from "./stack";
 import { mergeResources } from "./util";
 
 /**
@@ -23,6 +24,7 @@ export interface CDKSnapApiFunctions {
 	path: string;
 	method: string;
 	function: Function | NodejsFunction;
+	methodOptions?: MethodOptions;
 }
 
 /**
@@ -124,7 +126,8 @@ export const createRestApi = (
 				.addResource(apiFunction.path)
 				.addMethod(
 					apiFunction.method,
-					new LambdaIntegration(apiFunction.function)
+					new LambdaIntegration(apiFunction.function),
+					apiFunction.methodOptions
 				);
 		}
 	}
