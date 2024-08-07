@@ -45,6 +45,7 @@ export interface CDKSnapApiResource {
 export interface CDKSnapApiResourceMethod {
 	verb: string;
 	function: Function | NodejsFunction;
+	methodOptions?: MethodOptions;
 }
 
 /**
@@ -89,7 +90,8 @@ const attachResources = (
 			for (let method of resource.methods) {
 				apiResource.addMethod(
 					method.verb,
-					new LambdaIntegration(method.function)
+					new LambdaIntegration(method.function),
+					method.methodOptions
 				);
 			}
 		}
