@@ -2,14 +2,14 @@ import {
 	BasePathMapping,
 	DomainName,
 	LambdaIntegration,
-	RestApi,
-	Resource,
 	MethodOptions,
+	Resource,
+	RestApi,
 	RestApiProps
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
-import type { CDKSnapStack } from "./stack";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import type { CDKSnapStack } from "./stack";
 import { mergeResources } from "./util";
 
 /**
