@@ -5,7 +5,7 @@ import {
 	MethodOptions,
 	Resource,
 	RestApi,
-	RestApiProps
+	RestApiProps,
 } from "aws-cdk-lib/aws-apigateway";
 import { Function } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -25,6 +25,7 @@ export interface CDKSnapApiFunctions {
 	method: string;
 	function: Function | NodejsFunction;
 	methodOptions?: MethodOptions;
+	isProxy?: boolean;
 }
 
 /**
@@ -40,6 +41,7 @@ export interface CDKSnapApiResource {
 	path: string;
 	resources?: CDKSnapApiResource[];
 	methods?: CDKSnapApiResourceMethod[];
+	isProxy?: boolean;
 }
 
 export interface CDKSnapApiResourceMethod {
@@ -90,7 +92,9 @@ const attachResources = (
 			for (let method of resource.methods) {
 				apiResource.addMethod(
 					method.verb,
-					new LambdaIntegration(method.function),
+					new LambdaIntegration(method.function, {
+						proxy: resource.isProxy,
+					}),
 					method.methodOptions
 				);
 			}
@@ -128,7 +132,9 @@ export const createRestApi = (
 				.addResource(apiFunction.path)
 				.addMethod(
 					apiFunction.method,
-					new LambdaIntegration(apiFunction.function),
+					new LambdaIntegration(apiFunction.function, {
+						proxy: apiFunction.isProxy,
+					}),
 					apiFunction.methodOptions
 				);
 		}
